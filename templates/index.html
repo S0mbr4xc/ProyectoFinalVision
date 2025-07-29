@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Proyecto final</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <h1>Proyecto final</h1>
+
+  <h2>🧠 Detección de rostros</h2>
+  <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
+    <input type="file" name="imagen" required>
+    <input type="submit" value="Detectar rostro">
+  </form>
+
+  <h2>🚀 Detección SIFT</h2>
+  <form method="POST" action="{{ url_for('deteccion_avanzada') }}" enctype="multipart/form-data">
+    <input type="file" name="imagen" required>
+    <input type="submit" value="Detectar objeto">
+  </form>
+
+  <a href="{{ url_for('webcam') }}">
+    <button style="margin-top: 15px;">📷 Activar cámara en tiempo real</button>
+  </a>
+
+  {% if resultado %}
+    <h2>🖼️ Resultado</h2>
+    <p><strong>Rostros detectados:</strong> {{ cantidad }}</p>
+    {% if avion %}
+      <p><strong>Objeto detectado:</strong> {{ avion }} ({{ coincidencias }} matches)</p>
+    {% endif %}
+    <p><strong>Tiempo de procesamiento:</strong> {{ tiempo }} segundos</p>
+    <img src="{{ url_for('uploaded_file', filename=resultado) }}" width="500">
+  {% endif %}
+
+  {% if imagenes %}
+    <h3>🗂️ Imágenes procesadas anteriormente</h3>
+    {% for img in imagenes %}
+      <div style="display:inline-block; margin:10px;">
+        <img src="{{ url_for('uploaded_file', filename=img) }}" width="100"><br>
+        <small>{{ img }}</small>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if error %}
+    <p style="color:red">{{ error }}</p>
+  {% endif %}
+</body>
+</html>

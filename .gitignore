@@ -1,0 +1,8 @@
+#Ignorar los archivos de la carpeta dataset-lbp
+dataset**/
+.pt
+runs/
+labels**/
+.yaml
+static/resultados
+static/uploads
