@@ -1,40 +1,83 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  padding: 30px;
-  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9fafb;
+  color: #222;
+  margin: 0;
+  padding: 2rem;
+  line-height: 1.6;
 }
 
 h1 {
-  color: #333;
+  text-align: center;
+  font-size: 2.4rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+h2, h3 {
+  color: #34495e;
+  margin-top: 2rem;
 }
 
 form {
-  margin: 20px 0;
+  background: #ffffff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 400px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-input[type="file"],
-input[type="submit"] {
-  padding: 10px;
-  margin: 10px;
-  font-size: 16px;
+input[type="file"] {
+  margin-bottom: 1rem;
+  display: block;
+}
+
+input[type="submit"], button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+input[type="submit"]:hover, button:hover {
+  background-color: #2980b9;
+}
+
+a button {
+  margin-top: 10px;
 }
 
 img {
+  margin-top: 1rem;
   border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-table {
-  margin: 20px auto;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 10px;
-  border: 1px solid #ccc;
+div[style*="display:inline-block"] {
+  text-align: center;
 }
 
 small {
+  font-size: 0.8rem;
   color: #555;
+}
+
+p strong {
+  color: #2c3e50;
+}
+
+p[style*="color:red"] {
+  background: #ffe5e5;
+  border: 1px solid #ff5c5c;
+  padding: 0.5rem;
+  border-radius: 5px;
+  color: #c0392b;
+  max-width: 600px;
+  margin-top: 1rem;
 }

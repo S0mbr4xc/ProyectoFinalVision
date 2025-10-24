@@ -133,25 +133,48 @@ def gen_webcam():
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if not cap.isOpened():
         raise RuntimeError("❌ No se pudo abrir la cámara.")
-    
+
     prev_time = time.time()
-    
+
     while True:
         ret, frame = cap.read()
         if not ret:
             break
 
-        resultados = modelo_yolo(frame)[0]
-        for box in resultados.boxes.xyxy.cpu().numpy().astype(int):
-            x1, y1, x2, y2 = box[:4]
-            frame = pixelar_region(frame, x1, y1, x2, y2)
-
+        # Medir FPS
         current_time = time.time()
         fps = 1 / (current_time - prev_time)
         prev_time = current_time
 
+        # Detección de rostros
+        resultados = modelo_yolo(frame)[0]
+        cantidad = 0
+        for box in resultados.boxes.xyxy.cpu().numpy().astype(int):
+            x1, y1, x2, y2 = box[:4]
+            frame = pixelar_region(frame, x1, y1, x2, y2)
+            cantidad += 1
+
+        # Uso de memoria
+        memoria = round(psutil.Process().memory_info().rss / (1024 * 1024), 2)
+
+        # Confianza simulada de SIFT (solo puntos detectados)
+        try:
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            kp = cv2.SIFT_create().detect(gray, None)
+            total_kp = len(kp)
+            confianza = min(100, round((total_kp / 250.0) * 100, 2))  # simulación
+        except:
+            confianza = 0
+
+        # Dibujar información en pantalla
         cv2.putText(frame, f'FPS: {fps:.2f}', (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (50, 255, 50), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (50, 255, 50), 2)
+        cv2.putText(frame, f'Rostros: {cantidad}', (10, 60),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 50), 2)
+        cv2.putText(frame, f'Memoria: {memoria} MB', (10, 90),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 100, 100), 2)
+        cv2.putText(frame, f'Confianza (SIFT): {confianza:.1f}%', (10, 120),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (200, 200, 255), 2)
 
         _, buffer = cv2.imencode('.jpg', frame)
         frame_bytes = buffer.tobytes()
